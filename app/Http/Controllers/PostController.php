@@ -3,10 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Mail\PostLiked;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
+    public function __construct(){
+        $this->middleware(['auth'])->only(['store', 'destroy']);
+    }
+
     public function index(){
 
         $posts = Post::with(['user', 'likes'])->orderBy('created_at', 'desc')->paginate(20);
